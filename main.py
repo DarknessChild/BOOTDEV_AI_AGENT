@@ -1,4 +1,5 @@
 import os
+import argparse
 from dotenv import load_dotenv
 from google import genai
 
@@ -9,9 +10,13 @@ except RuntimeError:{"Key GEMINI_API_KEY does not exist  in .env."}
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Chatbot")
+    parser.add_argument("user_prompt", type=str, help="User prompt")
+    args = parser.parse_args()
+    # Now we can access `args.user_prompt`
     client = genai.Client(api_key=api_key)
     response = client.models.generate_content(
-    model='gemini-2.5-flash', contents='"Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."?'
+    model='gemini-2.5-flash', contents=args.user_prompt
     )
     if response.usage_metadata:
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
