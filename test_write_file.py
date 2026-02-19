@@ -1,0 +1,10 @@
+from functions.write_file import write_file
+result_1 = write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum")
+result_2 = write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet")
+result_3 = write_file("calculator", "/tmp/temp.txt", "this should not be allowed")
+print("Result for lorem.txt:")
+print(f"    {result_1}")
+print("result for pkg/morelorem.tx:")
+print(f"    {result_2}")
+print("result for /tmp/temp.txt:")
+print(f"    {result_3}")
