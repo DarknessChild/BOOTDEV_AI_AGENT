@@ -1,0 +1,22 @@
+import os
+def run_python_file(working_directory, file_path, args=None):
+    try:
+        abs_working_dir = os.path.abspath(working_directory)
+        target_dir = os.path.normpath(os.path.join(abs_working_dir, file_path))
+        # Will be True or False
+        valid_target_dir = os.path.commonpath([abs_working_dir, target_dir]) == abs_working_dir
+        if valid_target_dir == True:
+            if os.path.isfile(target_dir):
+                if file_path.endswith('.py')
+                    try:
+                        pass
+                    except Exception as e:
+                        return f'Error: {e}'
+                else:
+                    return f'Error: "{file_path}" is not a Python file'
+            else:
+                return f'Error: "{file_path}" does not exist or is not a regular file'
+        else:
+            return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
+    except Exception as e:
+        return f'Error: {e}'
