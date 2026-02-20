@@ -1,4 +1,5 @@
 import os
+import subprocess
 def run_python_file(working_directory, file_path, args=None):
     try:
         abs_working_dir = os.path.abspath(working_directory)
@@ -7,8 +8,12 @@ def run_python_file(working_directory, file_path, args=None):
         valid_target_dir = os.path.commonpath([abs_working_dir, target_dir]) == abs_working_dir
         if valid_target_dir == True:
             if os.path.isfile(target_dir):
-                if file_path.endswith('.py')
+                if file_path.endswith('.py'):
                     try:
+                        command = ["python", target_dir]
+                        if not args is None:
+                            command.extend(args)
+                        subprocess.run(command)
                         pass
                     except Exception as e:
                         return f'Error: {e}'
