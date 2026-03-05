@@ -1,5 +1,23 @@
 import os
 import subprocess
+from google.genai import types
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
+    description="Reads file contents, trucating output of a given file to 10000 characters.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Location of the file to read, relative to the working directory (default is the working directory itself)",
+            ),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                description="Arguments to be used with the given python file to execute."
+            ),
+        },
+    ),
+)
 def run_python_file(working_directory, file_path, args=None):
     try:
         abs_working_dir = os.path.abspath(working_directory)

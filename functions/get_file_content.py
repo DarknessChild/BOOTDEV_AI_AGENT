@@ -1,6 +1,6 @@
 import os
 from google.genai import types
-schema_get_files_info = types.FunctionDeclaration(
+schema_get_file_content = types.FunctionDeclaration(
     name="get_file_content",
     description="Runs arbitrary python code from a given file.",
     parameters=types.Schema(
