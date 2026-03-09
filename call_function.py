@@ -17,3 +17,5 @@ def call_function(function_call, verbose=False):
     "run_python_file": run_python_file,
     "write_file": write_file,
 }
+    function_name = function_call.name or ""
+    
