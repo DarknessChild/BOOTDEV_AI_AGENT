@@ -18,4 +18,13 @@ def call_function(function_call, verbose=False):
     "write_file": write_file,
 }
     function_name = function_call.name or ""
-    
+    if function_name not in function_map:
+        return types.Content(
+            role="tool",
+            parts=[
+                types.Part.from_function_response(
+                    name=function_name,
+                    response={"error": f"Unknown function: {function_name}"},
+                )
+            ],
+        )
