@@ -10,11 +10,6 @@ schema_get_file_content = types.FunctionDeclaration(
                 type=types.Type.STRING,
                 description="Location of the file to read, relative to the working directory (default is the working directory itself)",
             ),
-            "args": types.Schema(
-                type=types.Type.ARRAY,
-                items=types.Schema(type=types.Type.STRING),
-                description="Arguments to be used with the given python file to execute."
-            ),
         },
     ),
 )
