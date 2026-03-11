@@ -1,4 +1,5 @@
 import os
+import sys
 import argparse
 from dotenv import load_dotenv
 from google import genai
@@ -20,29 +21,40 @@ def main():
     # Now we can access `args.user_prompt`
     messages = [types.Content(role="user", parts=[types.Part(text=args.user_prompt)])]
     client = genai.Client(api_key=api_key)
-    response = client.models.generate_content(
-    model='gemini-2.5-flash',
-    contents=messages,
-    config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt,
-    temperature=0
-    ),
-    )
-    if response.function_calls:
-        function_responses = []
-        for function_call in response.function_calls:
-            result = call_function(function_call, args.verbose)
-            if not result.parts:
-                raise RuntimeError("Empty parts")
-            if result.parts[0].function_response is None:
-                raise RuntimeError("No function response")
-            if result.parts[0].function_response.response is None:
-                raise RuntimeError("No response data")
-            function_responses.append(result.parts[0])
-            if args.verbose:
-                print(f"-> {result.parts[0].function_response.response}")
+    for _ in range(20):
+        response = client.models.generate_content(
+        model='gemini-2.5-flash',
+        contents=messages,
+        config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt,
+        temperature=0
+        ),
+        )
 
+        if response.candidates:
+            for candidate in response.candidates:
+                messages.append(candidate.content)
+
+        if response.function_calls:
+            function_responses = []
+            for function_call in response.function_calls:
+                result = call_function(function_call, args.verbose)
+                if not result.parts:
+                    raise RuntimeError("Empty parts")
+                if result.parts[0].function_response is None:
+                    raise RuntimeError("No function response")
+                if result.parts[0].function_response.response is None:
+                    raise RuntimeError("No response data")
+                function_responses.append(result.parts[0])
+                if args.verbose:
+                    print(f"-> {result.parts[0].function_response.response}")
+            messages.append(types.Content(role="user", parts=function_responses))
+
+        else:
+            print(f"Response: {response.text}")
+            break
     else:
-        print(f"Response: {response.text}")
+        print("Maximum iterations reached without a final response")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
