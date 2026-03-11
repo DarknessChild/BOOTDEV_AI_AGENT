@@ -2,13 +2,18 @@ import os
 from google.genai import types
 schema_get_file_content = types.FunctionDeclaration(
     name="get_file_content",
-    description="Runs arbitrary python code from a given file.",
+    description="Reads file contents, trucating output of a given file to 10000 characters.",
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
             "file_path": types.Schema(
                 type=types.Type.STRING,
-                description="Location of the python file to execute, relative to the working directory (default is the working directory itself)",
+                description="Location of the file to read, relative to the working directory (default is the working directory itself)",
+            ),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                items=types.Schema(type=types.Type.STRING),
+                description="Arguments to be used with the given python file to execute."
             ),
         },
     ),
