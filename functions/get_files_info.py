@@ -19,7 +19,7 @@ def get_files_info(working_directory, directory="."):
         target_dir = os.path.normpath(os.path.join(abs_working_dir, directory))
         # Will be True or False
         valid_target_dir = os.path.commonpath([abs_working_dir, target_dir]) == abs_working_dir
-        if valid_target_dir == True:
+        if valid_target_dir:
             if os.path.isdir(target_dir):
                 try:
                     formatted_file_list = []
